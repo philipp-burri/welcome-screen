@@ -1,13 +1,13 @@
 <script setup>
-/* import { ref } from 'vue';
+import { ref } from 'vue';
 
-const content = ref ([
-{
-  date: 'currentDate'
-}
-]
- */
- let date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+const title = ref('Welcome to Opportunity')
+
+
+
+
+
+let date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 let options = { /* weekday: 'long',  */ year: 'numeric', month: 'numeric', day: 'numeric' };
 </script>
 
@@ -17,7 +17,7 @@ let options = { /* weekday: 'long',  */ year: 'numeric', month: 'numeric', day: 
 
 <main>
     <div class="wrapper">
-    <div class="title">Welcome to Opportunity</div>
+    <div class="title">{{ title }}</div>
     <div class="date">{{ new Date().toLocaleString("de-ch", options) }}</div>
     <div class="info">
   <div class="info-card">
