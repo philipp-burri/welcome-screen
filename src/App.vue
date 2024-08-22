@@ -1,11 +1,38 @@
 <script setup>
 import { ref } from 'vue';
+import { onMounted } from 'vue';
 
-const title = ref('Welcome to Opportunity')
+const cardTitle = ref('Welcome to Opportunity')
+
+const data = ref([])
 
 
 
+async function fetchData() {
+  try {
+    const response = await fetch('https://sheets.googleapis.com/v4/spreadsheets/1wIFXqrkCjqjseb5cQ-bgUfNHN1_0_fKsYF83joG9TyE/values:batchGet?ranges=A1%3AE100&valueRenderOption=FORMATTED_VALUE&key=AIzaSyCKDG01USZ8jilSU3cWaV_LhS3u8aXuOGg');
+    const jsonData = await response.json();
+    console.log(jsonData);
+    data.value = jsonData.valueRanges[0].values.slice(1).map (row => ({
+      time: row[0],
+      title: row[1],
+      location: row[2]
+    }))
+    console.log(data.value);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
 
+onMounted(() => {
+  fetchData();
+  
+});
+/* SS 1wIFXqrkCjqjseb5cQ-bgUfNHN1_0_fKsYF83joG9TyE */
+
+/* API AIzaSyCKDG01USZ8jilSU3cWaV_LhS3u8aXuOGg */
+
+/* https://sheets.googleapis.com/v4/spreadsheets/1wIFXqrkCjqjseb5cQ-bgUfNHN1_0_fKsYF83joG9TyE/values:batchGet?ranges=A1%3AE100&valueRenderOption=FORMATTED_VALUE&key=AIzaSyCKDG01USZ8jilSU3cWaV_LhS3u8aXuOGg */
 
 let date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 let options = { /* weekday: 'long',  */ year: 'numeric', month: 'numeric', day: 'numeric' };
@@ -17,37 +44,20 @@ let options = { /* weekday: 'long',  */ year: 'numeric', month: 'numeric', day: 
 
 <main>
     <div class="wrapper">
-    <div class="title">{{ title }}</div>
+    <div class="cardTitle">{{ cardTitle }}</div>
     <div class="date">{{ new Date().toLocaleString("de-ch", options) }}</div>
     <div class="info">
-  <div class="info-card">
-    <ul>
-      
-        <li><div class="info-time"><b>14:00 Uhr</b></div></li>
-       <li><div class="info-title"><b>Basisbeschäftigung Besuch</b></div></li>
-        <li><div class="info-desc">Interessierte für den zweiten Kurs werden uns besuchen</div></li>
-      
-    </ul>
-  </div>
-  <div class="info-card">
-    <ul>
-      
-      <li><div class="info-time"><b>14:00 Uhr</b></div></li>
-     <li><div class="info-title"><b>Basisbeschäftigung Besuch</b></div></li>
-      <li><div class="info-desc">Interessierte für den zweiten Kurs werden uns besuchen</div></li>
-    
+      <div v-for="(event, index) in data" :key="index" class="info-card">
+  <ul>
+    <li><div class="info-time">{{ event.time }}</div></li>
+    <li><div class="info-title">{{ event.title }}</div></li>
+    <li><div class="info-location">{{ event.location }}</div></li>
   </ul>
-  </div>
-  <div class="info-card">
-    <ul>
-      
-      <li><div class="info-time"><b>14:00 Uhr</b></div></li>
-     <li><div class="info-title"><b>Basisbeschäftigung Besuch</b></div></li>
-      <li><div class="info-desc">Interessierte für den zweiten Kurs werden uns besuchen</div></li>
-  </ul>
-  </div>
 </div>
-    </div>
+</div>
+</div> 
+
+    
 <div class="footer">
   <div class="icon-container">
     <img class="icon1" src="/STZH_SEB_Logo.png" alt="">
@@ -83,7 +93,7 @@ main{
 ul{
   list-style: none;
 }
-.title{
+.cardTitle{
   padding-top: 70px;
   font-size: 62px;
   font-weight: 900;
@@ -122,7 +132,7 @@ ul{
   font-weight: 900;
   font-size: 28px;
 }
-.info-desc{
+.info-location{
   color: #FFBFAB;
   font-size: 28px;
 }
