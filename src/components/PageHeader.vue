@@ -3,10 +3,9 @@ import { ref } from 'vue';
 
 const cardTitle = ref('Welcome to Opportunity')
 
-let options = { /* weekday: 'long',  */ year: 'numeric', month: 'numeric', day: 'numeric' };
+const options = { /* weekday: 'long',  */ year: 'numeric', month: 'numeric', day: 'numeric' };
 const currentDate = ref(new Date().toLocaleString("de-ch", options))
-
-let date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
+const date = new Date(Date.UTC(2012, 11, 20, 3, 0, 0));
 
 </script>
 

@@ -27,7 +27,6 @@ function startDataFetching() {
 
 onMounted(() => {
   startDataFetching();
-  
 });
 </script>
 
